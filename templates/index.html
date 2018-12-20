@@ -5,12 +5,13 @@
 {% endblock %}
 
 {% block main %}
-    <h1>Conferences Test</h1>
+    <h1>Teams</h1>
     {% for conference in conferences %}
       <div>
-        {{conference["name"]}}
-        {% for team in teams %}
-        {{team[conference]['school']}}
+        <h2>{{conference["name"]}}</h2>
+        <ul>
+        {% for team in teams if team.conference|string() == conference.name|string() %}
+          <li><img src={{team["logos"][0]}} height="40" width="40">{{team["school"]}}</li>
         {% endfor %}
       </div>
     {% endfor %}

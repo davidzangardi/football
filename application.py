@@ -31,7 +31,14 @@ def homepage():
     with open('/tmp/conferences.json', 'r') as f:
         conferences = json.loads(f.read())
 
-        return render_template('index.html', conferences=conferences)
+    teams = []
+    for conference in conferences:
+        a = conference['abbreviation']
+        with open('/tmp/' + a + '.json', 'r') as g:
+            t = json.loads(g.read())
+            teams += t
+
+    return render_template('index.html', conferences=conferences, teams=teams)
 
 
 if __name__ == '__main__':
