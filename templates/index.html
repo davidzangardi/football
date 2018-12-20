@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Team
+{% endblock %}
+
+{% block main %}
+    <h1>Conferences</h1>
+    {% for conference in conferences %}
+      <div>
+        {{conference["name"]}}
+        {% for team in teams %}
+        {{team[conference]['school']}}
+        {% endfor %}
+      </div>
+    {% endfor %}
+{% endblock %}
