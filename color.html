@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<head><title>Pick a color</title></head>
+<label for="pickit">Color Picker</label>
+<select id="pickit" onchange="showme(this);">
+<option value="noop" >Pick a color</option>
+<option value="red" data-color="rgb(255,0,0)" data-image="red.png">Red</option>
+<option value="green" data-color="rgb(0,255,0)" data-image="green.png">Green</option>
+<option value="green" data-color="rgb(0,0,255)" data-image="blue.png">Blue</option>
+</select>
+<div id="showit">
+<p>In living color</p>
+</div>
+
+<script>
+function showme(obj) {
+// get the selected index of obj
+// get the data-color and data-image from selected index
+picked = obj.children[obj.selectedIndex];
+newcolor = picked.dataset.color
+document.getElementById('showit').setAttribute('style','color: '+newcolor+';')
+return;
+}
+</script>
