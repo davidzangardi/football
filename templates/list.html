@@ -6,12 +6,13 @@
 
 {% block main %}
     <h1>Teams</h1>
-    <select>
     {% for conference in conferences %}
-      <optgroup label="{{conference["name"]}}">
+      <div>
+        <h2>{{conference["name"]}}</h2>
+        <ul>
         {% for team in teams if team.conference|string() == conference.name|string() %}
-        <option value={{team["school"]}}>{{team["school"]}}  {{team["mascot"]}}</option>
+          <li><img src={{team["logos"][0]}} height="40" width="40">{{team["school"]}}  {{team["mascot"]}}</li>
         {% endfor %}
+      </div>
     {% endfor %}
-    </select>
 {% endblock %}
