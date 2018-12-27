@@ -41,14 +41,46 @@ def homepage():
     return render_template('index.html', conferences=conferences, teams=teams)
 
 
+@app.route("/list")
+def list():
+    return render_template("list.html")
+
+
+@app.route('/_add_numbers')
+def add_numbers():
+    a = request.args.get('a', 0, type=int)
+    b = request.args.get('b', 0, type=int)
+    return jsonify(result=a + b)
+
+
 @app.route("/teams")
 def teams():
     return render_template("teams.html")
 
 
-@app.route("/list")
-def list():
-    return render_template("list.html")
+@app.route("/teams2")
+def teams2():
+    return render_template("teams2.html")
+
+
+@app.route("/conferences")
+def conferences():
+    with open('/tmp/conferences.json', 'r') as f:
+        conferences = json.loads(f.read())
+    return json.dumps(conferences)
+
+
+@app.route("/schools")
+def schools():
+    with open('/tmp/conferences.json', 'r') as f:
+        conferences = json.loads(f.read())
+    schools = []
+    for conference in conferences:
+        a = conference['abbreviation']
+        with open('/tmp/' + a + '.json', 'r') as g:
+            t = json.loads(g.read())
+            schools += t
+    return json.dumps(schools)
 
 
 if __name__ == '__main__':
