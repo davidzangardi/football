@@ -26,7 +26,7 @@ def after_request(response):
     return response
 
 
-@app.route('/')
+@app.route("/")
 def homepage():
     with open('/tmp/conferences.json', 'r') as f:
         conferences = json.loads(f.read())
@@ -39,6 +39,16 @@ def homepage():
             teams += t
 
     return render_template('index.html', conferences=conferences, teams=teams)
+
+
+@app.route("/teams")
+def teams():
+    return render_template("teams.html")
+
+
+@app.route("/list")
+def list():
+    return render_template("list.html")
 
 
 if __name__ == '__main__':
