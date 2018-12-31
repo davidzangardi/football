@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Team
+{% endblock %}
+
+{% block main %}
+    <h1>Teams</h1>
+    <select>
+    {% for conference in conferences %}
+      <optgroup label="{{conference["name"]}}">
+        {% for team in teams if team.conference|string() == conference.name|string() %}
+        <option value={{team["school"]}}>{{team["school"]}}  {{team["mascot"]}}</option>
+        {% endfor %}
+    {% endfor %}
+    </select>
+{% endblock %}

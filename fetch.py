@@ -4,10 +4,11 @@ import os
 # fetch conferences
 c = requests.get('https://api.collegefootballdata.com/conferences')
 
-with open('/tmp/conferences.tmp.json', 'w') as f:
+with open('./resources/teams/conferences.tmp.json', 'w') as f:
     f.write(c.text)
 
-os.rename('/tmp/conferences.tmp.json', '/tmp/conferences.json')
+os.rename('./resources/teams/conferences.tmp.json',
+          './resources/teams/conferences.json')
 
 conferences = c.json()
 
@@ -17,9 +18,10 @@ for conference in conferences:
     t = requests.get(
         'https://api.collegefootballdata.com/teams?conference=' + a)
 
-    with open('/tmp/' + a + '.tmp.json', 'w') as g:
+    with open('./resources/teams/' + a + '.tmp.json', 'w') as g:
         g.write(t.text)
-    os.rename('/tmp/' + a + '.tmp.json', '/tmp/' + a + '.json')
+    os.rename('./resources/teams/' + a + '.tmp.json',
+              './resources/teams/' + a + '.json')
 
     teams = t.json()
 
@@ -32,6 +34,16 @@ for conference in conferences:
         r = requests.get(
             'https://api.collegefootballdata.com/roster?team=' + s1)
 
-        with open('/tmp/' + s2 + '.tmp.json', 'w') as h:
+        with open('./resources/rosters/' + s2 + '.tmp.json', 'w') as h:
             h.write(r.text)
-        os.rename('/tmp/' + s2 + '.tmp.json', '/tmp/' + s2 + '.json')
+        os.rename('./resources/rosters/' + s2 + '.tmp.json',
+                  './resources/rosters/' + s2 + '.json')
+
+        # fetch schedules
+        schedule = requests.get(
+            'https://api.collegefootballdata.com/games?year=2018&seasonType=regular&team=' + s1)
+
+        with open('./resources/schedules/' + s2 + '.tmp.json', 'w') as i:
+            i.write(schedule.text)
+        os.rename('./resources/schedules/' + s2 + '.tmp.json',
+                  './resources/schedules/' + s2 + '.json')

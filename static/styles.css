@@ -1,47 +1,19 @@
-nav .navbar-brand
-{
-    /* size for brand */
-    font-size: xx-large;
+body {
+  padding-top: 90px;
+}
+@media (max-width: 979px) {
+  body {
+    padding-top: 0px;
+  }
 }
 
-/* colors for brand */
-nav .navbar-brand .blue
-{
-    color: #537fbe;
+.folders { background-color: #bbb; list-style-type: none; padding: 0; margin: 0; border-radius: 7px;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #d6d6d6), color-stop(0.4, #c0c0c0), color-stop(1,#a4a4a4));
+    margin: 10px 0 16px 0;
+    font-size: 0px;
 }
-nav .navbar-brand .red
-{
-    color: #ea433b;
-}
-nav .navbar-brand .yellow
-{
-    color: #f5b82e;
-}
-nav .navbar-brand .green
-{
-    color: #2e944b;
-}
-
-main .form-control
-{
-    /* center form controls */
-    display: inline-block;
-
-    /* override Bootstrap's 100% width for form controls */
-    width: auto;
-}
-
-main
-{
-    /* scroll horizontally as needed */
-    overflow-x: auto;
-
-    /* center contents */
-    text-align: center;
-}
-
-main img
-{
-    /* constrain images on small screens */
-    max-width: 100%;
-}
+.folders li:hover { background-color: #ddd; }
+.folders li:first-child { border-left: none; border-radius: 7px 0 0 7px; }
+.folders li { font-size: 16px; font-weight: bold; display: inline-block; padding: 0.5em 1.5em; cursor: pointer; color: #444; text-shadow: #f7f7f7 0 1px 1px; border-left: 1px solid #ddd; border-right: 1px solid #888; }
+.folders li { *display: inline !important; } /* IE7 only */
+.folders .selected { background-color: #444 !important; color: white; text-shadow:none; border-right-color: #aaa; border-left: none; box-shadow:inset 1px 2px 6px #070707; }  

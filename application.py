@@ -5,6 +5,7 @@ from flask import Flask, redirect, render_template, request, session, jsonify
 from flask_session import Session
 from tempfile import mkdtemp
 import json
+from helpers import lookup
 
 # Configure application
 app = Flask(__name__)
@@ -28,59 +29,69 @@ def after_request(response):
 
 @app.route("/")
 def homepage():
-    with open('/tmp/conferences.json', 'r') as f:
-        conferences = json.loads(f.read())
-
-    teams = []
-    for conference in conferences:
-        a = conference['abbreviation']
-        with open('/tmp/' + a + '.json', 'r') as g:
-            t = json.loads(g.read())
-            teams += t
-
-    return render_template('index.html', conferences=conferences, teams=teams)
-
-
-@app.route("/list")
-def list():
-    return render_template("list.html")
-
-
-@app.route('/_add_numbers')
-def add_numbers():
-    a = request.args.get('a', 0, type=int)
-    b = request.args.get('b', 0, type=int)
-    return jsonify(result=a + b)
-
-
-@app.route("/teams")
-def teams():
-    return render_template("teams.html")
-
-
-@app.route("/teams2")
-def teams2():
-    return render_template("teams2.html")
+    return render_template('index.html')
 
 
 @app.route("/conferences")
 def conferences():
     with open('/tmp/conferences.json', 'r') as f:
         conferences = json.loads(f.read())
-    return json.dumps(conferences)
+    return jsonify(conferences)
 
 
-@app.route("/schools")
+@app.route("/schools", methods=['GET'])
 def schools():
-    with open('/tmp/conferences.json', 'r') as f:
+    with open('./resources/teams/conferences.json', 'r') as f:
         conferences = json.loads(f.read())
     schools = []
     for conference in conferences:
         a = conference['abbreviation']
-        with open('/tmp/' + a + '.json', 'r') as g:
+        with open('./resources/teams/' + a + '.json', 'r') as g:
             t = json.loads(g.read())
             schools += t
-    return json.dumps(schools)
+    return jsonify(schools)
+
+
+@app.route("/rosters", methods=['GET'])
+def rosters():
+
+    if 'school' in request.args:
+        school = (request.args['school'])
+
+    s1 = school.replace(" ", "_").replace("'", " ").replace(
+        "&", "").replace("(", "").replace(")", "")
+
+    with open('./resources/rosters/' + s1 + '.json', 'r') as f:
+        roster = json.loads(f.read())
+
+    return jsonify(roster)
+
+
+@app.route("/schedules", methods=['GET'])
+def schedules():
+
+    if 'school' in request.args:
+        school = (request.args['school'])
+
+    s1 = school.replace(" ", "_").replace("'", " ").replace(
+        "&", "").replace("(", "").replace(")", "")
+
+    with open('./resources/schedules/' + s1 + '.json', 'r') as f:
+        schedule = json.loads(f.read())
+
+    return jsonify(schedule)
+
+
+@app.route("/news")
+def news():
+    """Look up articles for school"""
+
+    school = request.args.get("school")
+
+    if not school:
+        raise RuntimeError("missing school")
+
+    return jsonify(lookup(school)[:8])
 
 
 if __name__ == '__main__':

@@ -1,17 +1,104 @@
-{% extends "layout.html" %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <!-- meta tags -->
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <meta name="College Football Info" content="David Zangardi">
+      <!-- CSS -->
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+      <link href="/static/styles.css" rel="stylesheet"/>
 
-{% block title %}
-    Team
-{% endblock %}
+    </head>
+    <body>
+      <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
+        <span class="navbar-brand mb-0 h1">
+          <img src="/static/logo.png" width="60" height="60" class="d-inline-block align-top" alt="football">
+          CFB Info
+        </span>
+        <div class="container">
+          <select class="custom-select custom-select-lg mb-3" data-bind="options: schools,
+                          optionsText: function(item) {
+                            return item.school + ' ' + item.mascot
+                          },
+                          value: selectedSchool,
+                          optionsCaption: 'Choose a team...'",></select>
+        </div>
+        <div class="container">
+          <ul class="folders" data-bind="foreach: folders">
+            <li data-bind="text: $data,
+                       css: { selected: $data == $root.chosenFolderId() },
+                       click: $root.goToFolder"></li>
+          </ul>
+        </div>
+      </nav>
 
-{% block main %}
-    <h1>Teams</h1>
-    <select>
-    {% for conference in conferences %}
-      <optgroup label="{{conference["name"]}}">
-        {% for team in teams if team.conference|string() == conference.name|string() %}
-        <option value={{team["school"]}}>{{team["school"]}}  {{team["mascot"]}}</option>
-        {% endfor %}
-    {% endfor %}
-    </select>
-{% endblock %}
+      <main role="main" class="container">
+
+        <div>
+          <!-- ko with: selectedSchool -->
+          <p>
+            School: <span data-bind="text: school"></span>
+          </p>
+          <p>
+            Conference: <span data-bind="text: conference"></span>
+          </p>
+          <img data-bind="attr: { src: logos[0], alt: school}">
+          <!-- /ko -->
+        </div>
+        
+        <div class="container">
+          <ul data-bind="foreach: selectedNewsArticles">
+            <li data-bind="text: title">
+            </li>
+          </ul>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead class="thead-dark"><tr><th>Last Name</th><th>First Name</th><th>Jersey #</th><th>Position</th><th>Height</th><th>Weight</th><th>Home Town</th><th>Home State</th><th>Year</th></tr></thead>
+            <tbody data-bind="foreach: selectedRosterData">
+                <tr>
+                    <td data-bind="text: last_name"></td>
+                    <td data-bind="text: first_name"></td>
+                    <td data-bind="text: jersey"></td>
+                    <td data-bind="text: position"></td>
+                    <td data-bind="text: height"></td>
+                    <td data-bind="text: weight"></td>
+                    <td data-bind="text: home_city"></td>
+                    <td data-bind="text: home_state"></td>
+                    <td data-bind="text: year"></td>
+                </tr>
+            </tbody>
+          </table>
+
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead class="thead-dark"><tr><th>Week</th><th>Home Team</th><th>Home Score</th><th>Away Team</th><th>Away Score</th><th>Venue</th><th>Date</th></thead>
+              <tbody data-bind="foreach: selectedScheduleData">
+                  <tr>
+                      <td data-bind="text: week"></td>
+                      <td data-bind="text: home_team"></td>
+                      <td data-bind="text: home_points"></td>
+                      <td data-bind="text: away_team"></td>
+                      <td data-bind="text: away_points"></td>
+                      <td data-bind="text: venue"></td>
+                      <td data-bind="text: start_date"></td>
+                  </tr>
+              </tbody>
+            </table>
+        </div>
+      </main>
+
+
+      <!-- JavaScript -->
+      <script
+      src="https://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+      <script type="text/javascript" src="{{ url_for('static', filename = 'knockout-3.4.2.js') }}"></script>
+      <script type="text/javascript" src="{{ url_for('static', filename = 'appViewModel.js') }}"></script>
+    </body>
+</html>
