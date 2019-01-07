@@ -32,11 +32,11 @@ def homepage():
     return render_template('index.html')
 
 
-@app.route("/conferences")
-def conferences():
-    with open('/tmp/conferences.json', 'r') as f:
-        conferences = json.loads(f.read())
-    return jsonify(conferences)
+@app.route("/teams")
+def teams():
+    with open('./resources/teams/teams.json', 'r') as e:
+        teams = json.loads(e.read())
+    return jsonify(teams)
 
 
 @app.route("/schools", methods=['GET'])
@@ -52,23 +52,25 @@ def schools():
     return jsonify(schools)
 
 
-@app.route("/rosters", methods=['GET'])
-def rosters():
+@app.route("/Roster", methods=['GET'])
+def Rosters():
 
     if 'school' in request.args:
         school = (request.args['school'])
+    else:
+        school = None
 
     s1 = school.replace(" ", "_").replace("'", " ").replace(
         "&", "").replace("(", "").replace(")", "")
 
-    with open('./resources/rosters/' + s1 + '.json', 'r') as f:
-        roster = json.loads(f.read())
+    with open('./resources/rosters/' + s1 + '.json', 'r') as h:
+        roster = json.loads(h.read())
 
     return jsonify(roster)
 
 
-@app.route("/schedules", methods=['GET'])
-def schedules():
+@app.route("/Schedule", methods=['GET'])
+def Schedule():
 
     if 'school' in request.args:
         school = (request.args['school'])
@@ -76,14 +78,14 @@ def schedules():
     s1 = school.replace(" ", "_").replace("'", " ").replace(
         "&", "").replace("(", "").replace(")", "")
 
-    with open('./resources/schedules/' + s1 + '.json', 'r') as f:
-        schedule = json.loads(f.read())
+    with open('./resources/schedules/' + s1 + '.json', 'r') as i:
+        schedule = json.loads(i.read())
 
     return jsonify(schedule)
 
 
-@app.route("/news")
-def news():
+@app.route("/News")
+def News():
     """Look up articles for school"""
 
     school = request.args.get("school")
